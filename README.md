@@ -66,7 +66,7 @@ I checked them and they all work.  You should try a few.  Pay attention to the d
 
 They are subtle, but useful.
 
-##The `HAVING` clause
+## The `HAVING` clause
 
 Here's something a bit more interesting... try these:
 
@@ -175,7 +175,7 @@ If I can borrow an analogy from object oriented programming-- entities could be 
 * Use Google Drawing to model a few entities and relationships that are related to the Point of Sales system (be certain that every member of the group contributes-- I expect to see rectangles, diamonds, and ovals)
 * Add the drawing to your repository
 
-##Relationships between tables
+## Relationships between tables
 
 One of the most important ideas is about the **type of relationships** between attributes.  These relationships may be:
 
