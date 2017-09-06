@@ -303,7 +303,7 @@ ALTER TABLE randA ADD INDEX B (B);
 ALTER TABLE randB ADD INDEX B (B);
 ```
 
-Now run the same query again (mine was MUCH faster the second time)  
+Now run the same query again (mine was MUCH faster the second time-- about 5 seconds for me)  
 After you've run it a second time, preface it with `EXPLAIN` and examine the rows. Now go back, remove
 the keys and run it again (just to make sure it's not a side effect of caching):
 
