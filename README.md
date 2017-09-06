@@ -249,7 +249,7 @@ text files called `rndA` and `rndB`. Both will contain two columns of random int
 and each will be 1000 lines long. Since I'm not 100% certain what we have on-hand we'll just use stock
 commands:
 ```{bash}
-for i in `seq 1 1000`;
+for i in `seq 1 2000`;
 do
  echo "scale=0; $RANDOM/32.767"|bc
 done > col1A
@@ -274,7 +274,7 @@ LOAD DATA LOCAL INFILE 'randA' INTO TABLE randA;
 (make sure to write down the time somewhere). Now fill the `randB` table with the corresponding values
 from `randB`.
 
-Let's start simply: Find all the rows in `randA` where A is between 1 and 10. (that takes about 0.09
+Let's start simply: Find all the rows in `randA` where A is between 1 and 10. (that takes about 0.01
 seconds for me)
 
 Now preface that with EXPLAIN:
@@ -292,8 +292,9 @@ that MariaDB uses):
 SELECT count(*) FROM randA, randB, randA AS C WHERE (randA.A<randB.A OR randA.A > randB.b) AND
 C.B=randB.b;
 ```
+This one takes some time to run... so this is a good time **in another terminal** to open up another connection to the database and use the command `SHOW PROCESSLIST;`  You can watch your query run.  When you get tired of waiting note the Id (mine was 481) and then use the `KILL` command.  I used `Kill 481;`
 
-It took me about a minute for it to run. Now add indices to the relevant columns (well... all of them)
+I got tired after about 5 minutes Now add indices to the relevant columns (well... all of them)
 
 ```{sql}
 ALTER TABLE randA ADD INDEX A (A);
