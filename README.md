@@ -22,7 +22,7 @@ Here we will learn substantially more sophisticated types of queries, dig deeper
 
 ## Back to the tables from Lab 3
 
-We return to modifying the tables we made in lab 3.  Keeping in mind what you now know about data normalization and anomalies, redesign the `poorDesign` table by splitting it into multiple tables without redundancy.
+We return to modifying the tables we made in lab 3.  Keeping in mind what you now know about data normalization and anomalies, redesign the `poorDesign` table by splitting it into multiple tables without redundancy.  Preface all your table names with `PD_` so know which ones to look at.
 
 ## Level Two and beyond (`ORDER BY`)
 
@@ -171,7 +171,7 @@ If I can borrow an analogy from object oriented programming-- entities could be 
 
 <span name="er-exercise"></span>**ER Exercise:**
 
-* Fork this lab to the repository of one person in your group (make sure I am a collaborator)
+* You only need one repository per group but make sure all the members are collaborators.
 * Use Google Drawing to model a few entities and relationships that are related to the Point of Sales system (be certain that every member of the group contributes-- I expect to see rectangles, diamonds, and ovals)
 * Add the drawing to your repository
 
@@ -389,7 +389,8 @@ Different database engines also can provide different types of indexes.  The `To
 ## To Do
 
 Make sure and complete the following:
-* Add your group to the [[group wiki page|groups]]
+* Submit the assignment in canvas and include the names of people in your group as well as the URL pointing to your group's github repository
+* Create the `PD_` tables during your `poorDesign` rewrite.
 * Each student should type up all the samples (NOTE:  copy-and-paste is bad-- just watching is bad:  type them up and talk to your group-mate(s) about what it means).  Nothing to turn in for this-- but a few tables should be generated (see below)
 * Read the contents of these links (see the lab for details of what to skim):
    * [Aggregation functions](http://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html)
