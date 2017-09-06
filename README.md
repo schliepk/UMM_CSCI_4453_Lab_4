@@ -390,7 +390,7 @@ Different database engines also can provide different types of indexes.  The `To
 ## To Do
 
 Make sure and complete the following:
-* Submit the assignment in canvas and include the names of people in your group as well as the URL pointing to your group's github repository
+* Include the URL pointing to your group's github repository via canvas.  Be certain your canvas groups match your github groups
 * Create the `PD_` tables during your `poorDesign` rewrite.
 * Each student should type up all the samples (NOTE:  copy-and-paste is bad-- just watching is bad:  type them up and talk to your group-mate(s) about what it means).  Nothing to turn in for this-- but a few tables should be generated (see below)
 * Read the contents of these links (see the lab for details of what to skim):
@@ -413,4 +413,5 @@ Make sure and complete the following:
 * Do these exercises:
    * [Entity-Relation Exercise](#er-exercise)
    * [Foreign Key Exercise](#foreign-key-exercise)
-   * Make sure your tables exist for the shell/mysql index and union examples.
+   * Make sure your tables exist for the shell/mysql index and union examples (where applicable).
+un
