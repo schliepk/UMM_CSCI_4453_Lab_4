@@ -169,7 +169,7 @@ A first pass to accomplishing this is to identify **entities** and **relationshi
 
 If I can borrow an analogy from object oriented programming-- entities could be viewed as instances, entity sets as classes (which is a bit of a stretch... but work with me).  Attributes can then be viewed as fields in the class definition.  The idea of *relations* doesn't really fit this analogy without introducing more complications than are useful.  You might also find the [tutorial](http://www.cs.sfu.ca/CourseCentral/354/zaiane/material/notes/Chapter2/node1.html) useful.
 
-<span name="er-exercise"></span>**ER Exercise:**
+<span id="er-exercise"></span>**ER Exercise:**
 
 * You only need one repository per group but make sure all the members are collaborators.
 * Use Google Drawing to model a few entities and relationships that are related to the Point of Sales system (be certain that every member of the group contributes-- I expect to see rectangles, diamonds, and ovals)
@@ -193,7 +193,7 @@ Many database systems (mariaDB and mySQL included) allow the user to introduce *
 
 For example, suppose you had an `inventory` table with a `vendor_id` attribute that was a foreign key in the `vendor` table.  It would probably be a bad idea if you inserted a record into `inventory` that included an invalid `vendor_id`.  
 
-<span name="foreign-key-exercise"></span>**Foreign Key Exercise**:  Each group should create two tables, one named `fk_A`, the other `fk_B`.  
+<span id="foreign-key-exercise"></span>**Foreign Key Exercise**:  Each group should create two tables, one named `fk_A`, the other `fk_B`.  
 * The first table should have a column named `idA` and `foreignID`.  The second table should have a column named `idB` and `text`.
 * The columns `idA` and `idB` should be primary keys, and `foreignID` should be a foreign key that refers to `idB` in `fk_B`.  
 * Experiment with creating the tables, inserting records, deleting records, and modifying values.
@@ -414,4 +414,3 @@ Make sure and complete the following:
    * [Entity-Relation Exercise](#er-exercise)
    * [Foreign Key Exercise](#foreign-key-exercise)
    * Make sure your tables exist for the shell/mysql index and union examples (where applicable).
-un
