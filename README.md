@@ -395,7 +395,7 @@ Different database engines also can provide different types of indexes.  The `To
 Make sure and complete the following:
 - [ ] Include the URL pointing to your group's github repository via canvas.  Be certain your canvas groups match your github groups
 - [ ] Create the `PD_` tables during your `poorDesign` rewrite.
-- [ ] Each student should type up all the samples (NOTE:  copy-and-paste is bad-- just watching is bad:  type them up and talk to your group-mate(s) about what it means).  Nothing to turn in for this-- but a few tables should be generated (see below)
+- [ ] Each student should type up all the samples (NOTE:  copy-and-paste is bad-- just watching is bad:  type them up and talk to your group-mate(s) about what it means).  Nothing to turn in for this-- but a few tables should be generated (see canvas rubric)
 - [ ] Read the contents of these links (see the lab for details of what to skim):
    * [Aggregation functions](http://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html)
    * [The SELECT statement](https://mariadb.com/kb/en/mariadb/select/)
