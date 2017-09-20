@@ -248,8 +248,8 @@ Indexes can be added or removed after a table is created using `ALTER TABLE`.  T
 ### Some concrete examples
 
 So let's see how much of a difference this makes. Go back to the command line, and we will create two
-text files called `rndA` and `rndB`. Both will contain two columns of random integers between 1 and 500
-and each will be 1000 lines long. Since I'm not 100% certain what we have on-hand we'll just use stock
+text files called `rndA` and `rndB`. Both will contain two columns of random integers between 0 and 999
+and each will be 2000 lines long. Since I'm not 100% certain what we have on-hand we'll just use stock
 commands:
 ```{bash}
 for i in `seq 1 2000`;
@@ -292,8 +292,8 @@ Now try this one (it took me FAR too long to come up with a query that confuses 
 that MariaDB uses):
 
 ```{sql}
-SELECT count(*) FROM randA, randB, randA AS C WHERE (randA.A<randB.A OR randA.A > randB.b) AND
-C.B=randB.b;
+SELECT count(*) FROM randA, randB, randA AS C WHERE (randA.A<randB.A OR randA.A > randB.B) AND
+C.B=randB.B;
 ```
 This one takes some time to run... so this is a good time **in another terminal** to open up another connection to the database and use the command `SHOW PROCESSLIST;`  You can watch your query run.  When you get tired of waiting note the Id (mine was 481) and then use the `KILL` command.  I used `Kill 481;`
 
