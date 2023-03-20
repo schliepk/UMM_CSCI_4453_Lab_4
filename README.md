@@ -254,10 +254,7 @@ Make sure and complete the following:
    * [ER tutorial](http://www.cs.sfu.ca/CourseCentral/354/zaiane/material/notes/Chapter2/node1.html)
    * [Relationships in relational databases](http://www.techrepublic.com/article/relational-databases-defining-relationships-between-database-tables/)
    * [Creating tables with a foreign key](http://dev.mysql.com/doc/refman/5.6/en/create-table-foreign-keys.html)
-   * [Good overview and recap](http://www.databasejournal.com/sqletc/article.php/1469521/Introduction-to-Relational-Databases.htm)
 - [ ] Do these tutorials (nothing to turn in-- but do the problems)
-   * [A second SELECT tutorial](http://www.sqlcourse2.com/)
 - [ ] Do these exercises:
    - [ ] [Entity-Relation Exercise](#er-exercise)
    - [ ] [Foreign Key Exercise](#foreign-key-exercise)
-   - [ ] Make sure your tables exist for the shell/mysql index and union examples (where applicable).
