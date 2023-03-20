@@ -14,9 +14,6 @@ Here we will learn substantially more sophisticated types of queries, dig deeper
     - [Entity Relationship Model](#entity-relationship-model)
   - [Relationships between tables](#relationships-between-tables)
   - [Introduction to indexes](#introduction-to-indexes)
-- [Working with indexes](#working-with-indexes)
-  - [Some concrete examples](#some-concrete-examples)
-  - [Some practice with unions](#some-practice-with-union)
 - [Some new developments](#some-new-developments)
 - [To Do](#to-do)
 
@@ -26,8 +23,8 @@ We return to modifying the tables we made in lab 3.  Keeping in mind what you no
 
 ## Level Two and beyond (`ORDER BY`)
 
-The next level of understanding (this is  the first one you learn *after* Magic Missile [^dnd]) comes from the `ORDER BY` 
-clause.  As you might expect, this controls the order of the entries in the table.  Try these:
+The next level of understanding comes from the `ORDER BY` 
+clause.  As you hopefully remember from lecture, this controls the order of the entries in the table.  Try these:
 
 ```
 SELECT * FROM inventory ORDER BY item;
@@ -57,11 +54,7 @@ SELECT * FROM poorDesign;
 SELECT comboName,count(*) AS count FROM poorDesign GROUP BY comboCode;
 ```
 
-There are several aggregate functions, but the mariaDB manuals certainly doesn't make it easy to figure out exactly what they are.  [The list from the mySQL documentation](http://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html) is perhaps more useful. I checked them and they all work.  You should try a few.  Pay attention to the difference between 
-
-```count(*)`, `count(<col name>)` and `count(DISTINCT <col name>)```
-
-These differences are subtle, but useful.
+There are several aggregate functions, but the SQL Server doesn't make it easy to figure out exactly what they are. You should search in the SQL Server online documents and find a few to try.  
 
 ## The `HAVING` clause
 
@@ -82,17 +75,13 @@ Now what happens if we want to restrict the `GROUPS` that we see?  That's where 
 SELECT comboCode, count(*) FROM poorDesign GROUP BY comboCode HAVING sum(comboCode)>3;
 ```
 
-You are now ready to read this (although there are still a few missing pieces):
-
-<https://mariadb.com/kb/en/select/>
-
-And with those pieces in place, go through and do these tutorials:
+You are now ready to read this:
 
 <http://www.sqlcourse2.com/index.html>
 
 ## SubQueries
 
-So... next level are subqueries (we're looking at Wizard's Eye here).  Here's an example:
+So... next level are subqueries.  Here's an example:
 
 ```
 SELECT * FROM inventory WHERE id IN (SELECT item FROM poorDesign);
@@ -186,7 +175,7 @@ You might be wondering why there is no many-to-one.  There is-- it's just a one-
 
 Now a **primary key** is just a key for a table, and a **foreign key** is a an attribute in one table that corresponds to primary key in another table.  
 
-Many database systems (mariaDB and mySQL included) allow the user to introduce **constraints** into the system.  Read up on [mysql's foreign keys](http://dev.mysql.com/doc/refman/5.6/en/create-table-foreign-keys.html), for an example.  These constraints help maintain **referential integrity**:  consistency in table spread across multiple tables.
+Many database systems (SQL Server and mySQL included) allow the user to introduce **constraints** into the system.  Read up on [mysql's foreign keys](http://dev.mysql.com/doc/refman/5.6/en/create-table-foreign-keys.html), for an example.  These constraints help maintain **referential integrity**:  consistency in table spread across multiple tables.
 
 For example, suppose you had an `inventory` table with a `vendor_id` attribute that was a foreign key in the `vendor` table.  It would probably be a bad idea if you inserted a record into `inventory` that included an invalid `vendor_id`.  
 
@@ -200,159 +189,6 @@ Each group should create two tables, one named `fk_A`, the other `fk_B`:
 
 Read this [introductory tutorial](http://www.databasejournal.com/sqletc/article.php/1469521/Introduction-to-Relational-Databases.htm).  Much of it will be review, but that's okay.
 
-## Introduction to indexes
-
-An **index** is a data structure associated with a table that makes look-ups quicker.  Faster look-ups allow for faster queries, faster updates, and faster deletes.  They do come with a price though – that extra structure has to be maintained.  You pay the cost with increased storage requirements and (occasionally) slower operations;  Operations like inserting, deleting, and updating *may* take more time because of that overhead, but they *may* also take less time if `WHERE` clauses are involved and the indexes speed up the searching.  **Note:**  In Database Land, the plural of index is **indexes**, not indices.  
-
-[This is a good overview](https://mariadb.com/kb/en/mariadb/what-is-an-index/), but be sure to read [this MariaDB page too](https://mariadb.com/kb/en/mariadb/getting-started-with-indexes/).
-
-In MariaDB, indexes come in three primary forms:
-
-1. **B-tree**
-1. **Hash**
-1. **R-tree**
-
-**B-trees** are a data-structure (perhaps more accurately a family of data-structures) that were designed to optimize typical data-base style manipulations; lookup data is stored in a way that tries to efficiently use relatively slow physical disk access and minimize the time spent necessary to keep the tree's order in place.  Lookups are `O(log n)`:  For more information check out the [wikipedia page on B-trees](https://en.wikipedia.org/wiki/B-tree).  I am **not** expecting you to know all the ins-and-outs, but it is worth having an idea of what's going on.  For those of you that have had Algorithms, your text from that class (CLSR) has a good writeup on B-Trees.  B-tree indexes are used for column comparisons using the >, >=, =, >=, < or BETWEEN operators, as well as for LIKE comparisons that begin with a constant.
-For example, the query 
-
-```
-SELECT * FROM Employees WHERE First_Name LIKE 'Maria%'
-```
-
-can make use of a B-tree index, while 
-
-```SELECT * FROM Employees WHERE First_Name LIKE '%aria'```
-cannot.
-
-B-tree indexes also permit leftmost prefixing for searching of rows.
-
-An index that is a B-tree index can **dramatically** improve query times-- they can also greatly improve performance on **ordering** indexed data.
-
-In contrast **Hash** indexes use a hash data structure.  They are **very** fast.  Hash indexes can only be used for equality comparisons, so those using the = or <=> operators. They cannot be used for ordering, and provide no information to the optimizer on how many rows exist between two values. Hash indexes do not permit leftmost prefixing - only the whole index can be used.
-
-The structure of your data should help you determine which one is best to use.
-
-Professor Michalis Vazigiannis has a [nice series of powerpoint slides](http://www.enseignement.polytechnique.fr/informatique/profs/Michalis.Vazirgiannis/course_slides/4_indexing_hashing.pdf) on the topic.  Don't worry too much about implementation details, but you should at least skim through all the slides.
-
-**[R-tree indexes](https://mariadb.com/kb/en/mariadb/spatial-index/)** may be created when a `CREATE INDEX` (or quivalent) command includes the `SPATIAL` keyword.  The exact structure used by MariaDB can vary (Both B-trees and R-trees are possible).  These indices are used for data like geographic information.
-
-## Working with indexes
-
-Indexes can be added or removed after a table is created using `ALTER TABLE`.  They can also be incorporated into a `CREATE TABLE` command.  The type of index is controlled via the `USING` keyword.  There are also "shortcut" commands in SQL that simplify things;  `CREATE INDEX` and `DROP INDEX` are two of the most commonly used.
-
-### Some concrete examples
-
-So let's see how much of a difference this makes. Go back to the command line, and we will create two
-text files called `rndA` and `rndB`. Both will contain two columns of random integers between 0 and 999
-and each will be 2000 lines long. Since I'm not 100% certain what we have on-hand we'll just use stock
-commands:
-
-```{bash}
-for i in `seq 1 2000`;
-do
- echo "scale=0; $RANDOM/32.767"|bc
-done > col1A
-```
-
-(Don't be surprised if the prompt changes after the first line). 
-
-Now repeat for `col2A`, `col1B`, and `col2B`.
-
-At this point you should have 4 files: col1A, col1B, col2A, col2B.  Now we are going to use them to make the files  `randA` and `randB`:
-
-```{bash}
-paste col1A col2A > randA
-paste col1B col2B > randB
-```
-
-Now each group should make two **TABLES** `randA` and `randB` with columns A and B both of which contain integers and no primary key. Then use
-
-```{sql}
-LOAD DATA LOCAL INFILE 'randA' INTO TABLE randA;
-```
-
-to load one file into the corresponding table. **Make sure to write down the time somewhere.** Now fill the `randB` table with the corresponding values
-from `randB`.
-
-Let's start simply: Find all the rows in `randA` where A is between 1 and 10. (that takes about 0.01
-seconds for me)
-
-Now preface that with EXPLAIN:
-
-```{sql}
-EXPLAIN SELECT * FROM randA WHERE A BETWEEN 1 AND 10;
-```
-
-Pay attention to the rows value.
-
-Now try this one (it took me FAR too long to come up with a query that confuses the built-in optimizer
-that MariaDB uses):
-
-```{sql}
-SELECT count(*) FROM randA, randB, randA AS C 
-   WHERE (randA.A<randB.A OR randA.A > randB.B) AND
-         C.B=randB.B;
-```
-
-This one takes some time to run... so this is a good time **in another terminal** to open up another connection to the database and use the command `SHOW PROCESSLIST;`  You can watch your query run.  When you get tired of waiting note the Id (mine was 481) and then use the `KILL` command.  I used `Kill 481;`
-
-I got tired after about 5 minutes Now add indices to the relevant columns (well... all of them)
-
-```{sql}
-ALTER TABLE randA ADD INDEX A (A);
-ALTER TABLE randB ADD INDEX A (A);
-ALTER TABLE randA ADD INDEX B (B);
-ALTER TABLE randB ADD INDEX B (B);
-```
-
-Now run the same query again (mine was MUCH faster the second time-- about 5 seconds for me)  
-After you've run it a second time, preface it with `EXPLAIN` and examine the rows. Now go back, remove
-the keys and run it again (just to make sure it's not a side effect of caching):
-
-```{sql}
-ALTER TABLE randA DROP INDEX A;
-ALTER TABLE randB DROP INDEX A;
-ALTER TABLE randA DROP INDEX B;
-ALTER TABLE randB DROP INDEX B;
-
-SELECT count(*) FROM randA, randB, randA AS C 
-   WHERE (randA.A<randB.A OR randA.A > randB.b) AND
-         C.B=randB.b;
-
-EXPLAIN
-SELECT count(*) FROM randA, randB, randA AS C 
-   WHERE (randA.A<randB.A OR randA.A > randB.b) AND
-         C.B=randB.b;
-```
-
-Now, let's drop the tables and recreate them (this time with the keys). Then we'll fill the data (our data
-set is so small this won't make much of a difference-- but it's good for you to know how to do this):
-
-```{sql}
-DROP TABLE randA; DROP TABLE randB;
-```
-
-Now recreate them, but this time with indexes from the beginning (hint:  that's something you'll need to do yourself).
-
-Now fill the first one without disabling the indexes:
-
-```{sql}
-LOAD DATA LOCAL INFILE 'randA' INTO TABLE randA;
-```
-
-Before filling the second one, disable the keys:
-
-```{sql}
-ALTER TABLE randB DISABLE KEYS;
-LOAD DATA LOCAL INFILE 'randB' INTO TABLE randB;
-ALTER TABLE randB ENABLE KEYS;
-```
-
-The last line re-enabled the keys.  
-
-It is more efficient to parse and build indexes for the entire file at once, instead of line-by-line.
-A piece of software that I wrote back in 2008 could read in millions of lines, and disabling the keys
-before importing saved over half an hour of time.
 
 ### Some practice with `UNION`
 
@@ -407,11 +243,9 @@ And it won't even complain about ambiguity because the ORDER BY is acting on the
 
 ## Some new developments
 
-Each database in MariaDB is stored using a **database engine**.  The defaults are a bit different between MariaDB and mySQL, but we aren't going to worry too much about those right now.
+Each database in SQL Server is stored using a **database engine**.  The defaults are a bit different between SQL Server and mySQL, but we aren't going to worry too much about those right now.
 
-Different database engines allow for different capabilities.  The `innoDB` engine (and descendents), for example, allow for **transactions** (we are going to talk about this in more detail in a later lab).  Transactions allow you to attempt to perform a series of actions.  At the end of the sequence the transaction is either **committed** if it succeeds or **rolled-back** if it fails.  This is an extension of the core idea of **atomicity** and forms one of the pillars of the relational database **ACID** concept (**A**tomicity, **C**onsistency, **I**solation, **D**urability).  
-
-Different database engines also can provide different types of indexes.  The `TokuDB` engine makes use of [fractal tree indexes](https://en.wikipedia.org/wiki/Fractal_tree_index) in a way that makes it particularly well suited to dealing with large data. (Peter has used them in his research)
+Different database engines allow for different capabilities.  The `Azure Data Studio` engine (and descendents), for example, allow for **transactions** (we are going to talk about this in more detail in a later lab).  Transactions allow you to attempt to perform a series of actions.  At the end of the sequence the transaction is either **committed** if it succeeds or **rolled-back** if it fails.  This is an extension of the core idea of **atomicity** and forms one of the pillars of the relational database **ACID** concept (**A**tomicity, **C**onsistency, **I**solation, **D**urability).  
 
 ## To Do
 
@@ -420,8 +254,6 @@ Make sure and complete the following:
 - [ ] Create the `PD_` tables during your `poorDesign` rewrite.
 - [ ] Each student should type up all the samples (NOTE:  copy-and-paste is bad-- just watching is bad:  type them up and talk to your group-mate(s) about what it means).  Nothing to turn in for this-- but a few tables should be generated (see canvas rubric)
 - [ ] Read the contents of these links (see the lab for details of what to skim):
-   * [Aggregation functions](http://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html)
-   * [The SELECT statement](https://mariadb.com/kb/en/mariadb/select/)
    * [SubQueries](http://beginner-sql-tutorial.com/sql-subquery.htm)
    * [Wikipedia page on Correlated subqueries](https://en.wikipedia.org/wiki/Correlated_subquery)
    * [Wikipedia page on ER models](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model)
@@ -429,16 +261,9 @@ Make sure and complete the following:
    * [Relationships in relational databases](http://www.techrepublic.com/article/relational-databases-defining-relationships-between-database-tables/)
    * [Creating tables with a foreign key](http://dev.mysql.com/doc/refman/5.6/en/create-table-foreign-keys.html)
    * [Good overview and recap](http://www.databasejournal.com/sqletc/article.php/1469521/Introduction-to-Relational-Databases.htm)
-   * [Overview of indexes](https://mariadb.com/kb/en/mariadb/what-is-an-index/) **Note:** be sure to read all the pages-- this one has arrows to lead to the next page!
-   * [Wikipedia entry on B Trees](https://en.wikipedia.org/wiki/B-tree)
-   * [Amazing set of slides on indexing and hashing](http://www.enseignement.polytechnique.fr/informatique/profs/Michalis.Vazirgiannis/course_slides/4_indexing_hashing.pdf)
-   * [Spatial indexes in MariaDB](https://mariadb.com/kb/en/mariadb/spatial-index/)
-   * [Fractal Tree indexes](https://en.wikipedia.org/wiki/Fractal_tree_index)
 - [ ] Do these tutorials (nothing to turn in-- but do the problems)
    * [A second SELECT tutorial](http://www.sqlcourse2.com/)
 - [ ] Do these exercises:
    - [ ] [Entity-Relation Exercise](#er-exercise)
    - [ ] [Foreign Key Exercise](#foreign-key-exercise)
    - [ ] Make sure your tables exist for the shell/mysql index and union examples (where applicable).
-
-[^dnd]: There are several Dungeons and Dragons references in this lab that I had to look up. Don't worry if you don't get them. :-) – Nic
