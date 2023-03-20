@@ -75,10 +75,6 @@ Now what happens if we want to restrict the `GROUPS` that we see?  That's where 
 SELECT comboCode, count(*) FROM poorDesign GROUP BY comboCode HAVING sum(comboCode)>3;
 ```
 
-You are now ready to read this:
-
-<http://www.sqlcourse2.com/index.html>
-
 ## SubQueries
 
 So... next level are subqueries.  Here's an example:
@@ -186,8 +182,6 @@ Each group should create two tables, one named `fk_A`, the other `fk_B`:
 * The first table should have a column named `idA` and `foreignID`.  The second table should have a column named `idB` and `text`.
 * The columns `idA` and `idB` should be primary keys, and `foreignID` should be a foreign key that refers to `idB` in `fk_B`.  
 * Experiment with creating the tables, inserting records, deleting records, and modifying values.
-
-Read this [introductory tutorial](http://www.databasejournal.com/sqletc/article.php/1469521/Introduction-to-Relational-Databases.htm).  Much of it will be review, but that's okay.
 
 
 ### Some practice with `UNION`
